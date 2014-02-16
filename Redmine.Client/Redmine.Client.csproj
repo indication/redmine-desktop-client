@@ -86,6 +86,11 @@
     <Compile Include="IssueGridSelectColumns.Designer.cs">
       <DependentUpon>IssueGridSelectColumns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Languages\Lang.ja.Designer.cs">
+      <DependentUpon>Lang.ja.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="ProjectMember.cs" />
     <Compile Include="BgWork.cs" />
     <Compile Include="BgWorker.cs">
@@ -175,6 +180,11 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\Lang.ru.resx" />
+    <EmbeddedResource Include="Languages\Lang.ja.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lang.ja.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="RedmineClientForm.resx">
       <DependentUpon>RedmineClientForm.cs</DependentUpon>
     </EmbeddedResource>

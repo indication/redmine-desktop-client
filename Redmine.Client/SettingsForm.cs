@@ -212,15 +212,24 @@ namespace Redmine.Client
             }
         }
 
+        private Redmine.Net.Api.RedmineManager getRedmineManager()
+        {
+            Redmine.Net.Api.RedmineManager manager;
+            if (AuthenticationCheckBox.Checked)
+                if (String.IsNullOrEmpty(RedminePasswordTextBox.Text))
+                    manager = new Redmine.Net.Api.RedmineManager(RedmineBaseUrlTextBox.Text, RedmineUsernameTextBox.Text, GetSelectedMimeFormat());
+                else
+                    manager = new Redmine.Net.Api.RedmineManager(RedmineBaseUrlTextBox.Text, RedmineUsernameTextBox.Text, RedminePasswordTextBox.Text, GetSelectedMimeFormat());
+            else
+                manager = new Redmine.Net.Api.RedmineManager(RedmineBaseUrlTextBox.Text, GetSelectedMimeFormat());
+            return manager;
+        }
+
         private void BtnTestConnection_Click(object sender, EventArgs e)
         {
             try
             {
-                Redmine.Net.Api.RedmineManager manager;
-                if (AuthenticationCheckBox.Checked)
-                    manager = new Redmine.Net.Api.RedmineManager(RedmineBaseUrlTextBox.Text, RedmineUsernameTextBox.Text, RedminePasswordTextBox.Text, GetSelectedMimeFormat());
-                else
-                    manager = new Redmine.Net.Api.RedmineManager(RedmineBaseUrlTextBox.Text, GetSelectedMimeFormat());
+                var manager = getRedmineManager();
                 User newCurrentUser = manager.GetCurrentUser();
                 MessageBox.Show(Lang.ConnectionTestOK_Text, Lang.ConnectionTestOK_Title, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -242,13 +251,8 @@ namespace Redmine.Client
                 return;
             try
             {
-                Redmine.Net.Api.RedmineManager manager;
+                var manager = getRedmineManager();
                 CloseStatuses = new List<IssueStatus>();
-                if (AuthenticationCheckBox.Checked)
-                    manager = new Redmine.Net.Api.RedmineManager(RedmineBaseUrlTextBox.Text, RedmineUsernameTextBox.Text, RedminePasswordTextBox.Text, GetSelectedMimeFormat());
-                else
-                    manager = new Redmine.Net.Api.RedmineManager(RedmineBaseUrlTextBox.Text, GetSelectedMimeFormat());
-
                 CloseStatuses = manager.GetTotalObjectList<IssueStatus>(null);
                 ComboBoxCloseStatus.DataSource = CloseStatuses;
                 ComboBoxCloseStatus.ValueMember = "Id";
@@ -285,13 +289,9 @@ namespace Redmine.Client
                 return;
             try
             {
-                Redmine.Net.Api.RedmineManager manager;
+                var manager = getRedmineManager();
                 NewStatuses = new List<IssueStatus>();
                 InProgressStatuses = new List<IssueStatus>();
-                if (AuthenticationCheckBox.Checked)
-                    manager = new Redmine.Net.Api.RedmineManager(RedmineBaseUrlTextBox.Text, RedmineUsernameTextBox.Text, RedminePasswordTextBox.Text, GetSelectedMimeFormat());
-                else
-                    manager = new Redmine.Net.Api.RedmineManager(RedmineBaseUrlTextBox.Text, GetSelectedMimeFormat());
 
                 NameValueCollection parameters = new NameValueCollection { { "is_closed", "false" } };
                 foreach (IssueStatus status in manager.GetTotalObjectList<IssueStatus>(parameters))

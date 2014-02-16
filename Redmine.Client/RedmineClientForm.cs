@@ -123,6 +123,19 @@ namespace Redmine.Client
             catch (Exception) { }
         }
 
+
+        private Redmine.Net.Api.RedmineManager getRedmineManager()
+        {
+            Redmine.Net.Api.RedmineManager manager;
+            if (RedmineAuthentication)
+                if (String.IsNullOrEmpty(RedminePassword))
+                    manager = new Redmine.Net.Api.RedmineManager(RedmineURL, RedmineUser, Settings.Default.CommunicationType);
+                else
+                    manager = new Redmine.Net.Api.RedmineManager(RedmineURL, RedmineUser, RedminePassword, Settings.Default.CommunicationType);
+            else
+                manager = new Redmine.Net.Api.RedmineManager(RedmineURL, Settings.Default.CommunicationType);
+            return manager;
+        }
         void Reinit(bool clientIsRunning = true)
         {
             if (clientIsRunning)
@@ -143,11 +156,7 @@ namespace Redmine.Client
                                 this.StartTimer();
                         }
                     }
-
-                    if (RedmineAuthentication)
-                        redmine = new RedmineManager(RedmineURL, RedmineUser, RedminePassword, Settings.Default.CommunicationType);
-                    else
-                        redmine = new RedmineManager(RedmineURL, Settings.Default.CommunicationType);
+                    redmine = getRedmineManager();
                     this.Cursor = Cursors.AppStarting;
 
                     AsyncGetFormData(projectId, issueId, activityId, CheckBoxOnlyMe.Checked);
